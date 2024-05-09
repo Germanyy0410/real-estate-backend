@@ -1,29 +1,33 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const { User } = require("../models/User");
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import prisma from "../lib/prisma.js";
 
 const bcryptSalt = bcrypt.genSaltSync(12);
 const secretKey =
   process.env.JWT_SECRET_KEY || "grab-engineering-bootcamp-team11";
 
-// Route for user registration
-exports.register = async (req, res) => {
-  const { email, password, fullname, phone, address } = req.body;
+export const register = async (req, res) => {
+  const { email, password, username, phone, address } = req.body;
 
   try {
-    const existingUser = await User.findOne({ email: email });
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists." });
-    }
+    // const existingUser = await User.findOne({ email: email });
+    // if (existingUser) {
+    //   return res.status(400).json({ message: "User already exists." });
+    // }
 
     const hashedPassword = bcrypt.hashSync(password, bcryptSalt);
-    const userDoc = await User.create({
-      email,
-      password: hashedPassword,
-      fullname,
-      phone,
-      address,
+    const newUser = await prisma.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+        username,
+        phone,
+        address,
+      },
     });
+
+    console.log(newUser);
+
     res.status(201).json(userDoc);
   } catch (error) {
     console.error("Error during registration:", error);
@@ -33,8 +37,7 @@ exports.register = async (req, res) => {
   }
 };
 
-// Route for user login
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -71,14 +74,6 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.getProfile = async (req, res) => {
-  //TODO:
-};
-
-exports.updateProfile = async (req, res) => {
-  //TODO:
-};
-
-exports.deleteProfile = async (req, res) => {
-  //TODO:
+export const logout = (req, res) => {
+  console.log("Logout");
 };

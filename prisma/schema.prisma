@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
+}
+
+model User {
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  email       String            @unique
+  password    String
+  username    String            @unique
+  phone       String?
+  address     String
+  createdAt   DateTime          @default(now())
+  posts       Post[]
+  savedPosts  SavedPost[]
+}
+
+model Post {
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  price       String
+  images      String[]
+  url         String
+  address     String
+  city        String
+  latitude    String
+  longitude   String
+  user        User              @relation(fields: [userId], references: [id])
+  userId      String            @db.ObjectId
+  type        PostType
+  postCode    String
+  postDetail  PostDetail?
+  savedPosts  SavedPost[]
+}
+
+enum PostType {
+  basic
+  gold
+  diamond
+}
+
+model PostDetail {
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  area        String
+  direction   Direction?
+  floor       Int?
+  bedroom     Int
+  toilet      Int
+  legal       String?
+  desc        String
+  postDate    DateTime
+  expireDate  DateTime
+  post        Post              @relation(fields: [postId], references: [id])
+  postId      String            @unique @db.ObjectId
+}
+
+enum Direction {
+  EastNorth
+  EastSouth
+  WestNorth
+  WestSouth
+}
+
+model SavedPost {
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  user        User              @relation(fields: [userId], references: [id])
+  post        Post              @relation(fields: [postId], references: [id])
+  userId      String            @unique @db.ObjectId
+  postId      String            @unique @db.ObjectId
+  createdAt   DateTime          @default(now())
+
+  @@unique([userId, postId])
+}
