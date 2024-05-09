@@ -7,13 +7,17 @@ const secretKey =
   process.env.JWT_SECRET_KEY || "grab-engineering-bootcamp-team11";
 
 export const register = async (req, res) => {
-  const { email, password, username, phone, address } = req.body;
+  const { email, password, username, address, phone } = req.body;
 
   try {
-    // const existingUser = await User.findOne({ email: email });
-    // if (existingUser) {
-    //   return res.status(400).json({ message: "User already exists." });
-    // }
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists." });
+    }
 
     const hashedPassword = bcrypt.hashSync(password, bcryptSalt);
     const newUser = await prisma.user.create({
@@ -28,7 +32,7 @@ export const register = async (req, res) => {
 
     console.log(newUser);
 
-    res.status(201).json(userDoc);
+    res.status(201).json(newUser);
   } catch (error) {
     console.error("Error during registration:", error);
     res
@@ -41,15 +45,21 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
 
     if (!user) {
-      res.status(404).json({ message: "User not found, please try again!" });
+      return res
+        .status(404)
+        .json({ message: "User not found, please try again!" });
     }
 
     const isPasswordValid = bcrypt.compareSync(password, user.password);
     if (!isPasswordValid) {
-      res
+      return res
         .status(401)
         .json({ message: "Password is incorrect, please try again!" });
     }
@@ -63,11 +73,9 @@ export const login = async (req, res) => {
       secretKey,
       { expiresIn: "1h" }
     );
-    res.cookie(
-      "token",
-      token,
-      { httpOnly: true }.json({ message: "Login successful", token })
-    );
+
+    res.cookie("token", token, { httpOnly: true });
+    res.status(200).json({ message: "Login successful", token });
   } catch (error) {
     console.error("Error during login:", error);
     res.status(500).json({ message: "An error occurred while logging in" });
@@ -75,5 +83,5 @@ export const login = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  console.log("Logout");
+  res.clearCookie("token").status(200).json({ message: "Logout Successful" });
 };

@@ -1,17 +1,19 @@
-import { Router } from "express";
-const router = Router();
+import express from "express";
 import {
-  register,
-  login,
-  getProfile,
-  updateProfile,
-  deleteProfile,
-} from "../controllers/user.controller";
+  deleteUser,
+  getUser,
+  getUsers,
+  updateUser,
+  savePost,
+} from "../controllers/user.controller.js";
+import { verifyToken } from "../middlewares/verifyToken.js";
 
-router.post("/register", register);
-router.post("/login", login);
-router.get("/profile", getProfile);
-router.put("/profile/update", updateProfile);
-router.delete("/profile/delete", deleteProfile);
+const router = express.Router();
+
+router.get("/", getUsers);
+router.get("/search/:id", verifyToken, getUser);
+router.put("/:id", verifyToken, updateUser);
+router.delete("/:id", verifyToken, deleteUser);
+router.post("/save", verifyToken, savePost);
 
 export default router;
