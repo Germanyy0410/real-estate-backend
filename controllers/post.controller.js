@@ -6,11 +6,11 @@ export const getPosts = async (req, res) => {
   const query = req.query;
 
   try {
-    let typeFilters = [];
+    // let typeFilters = [];
 
-    if (query.type) {
-      typeFilters = query.type.split(",");
-    }
+    // if (query.type) {
+    //   typeFilters = query.type.split(",");
+    // }
     const posts = await prisma.post.findMany({
       where: {
         city: query.city || undefined,
@@ -18,10 +18,10 @@ export const getPosts = async (req, res) => {
           gte: parseInt(query.minPrice) || undefined,
           lte: parseInt(query.maxPrice) || undefined,
         },
-        OR:
-          typeFilters.map((type) => ({
-            type: type,
-          })) || undefined,
+        // OR:
+        //   typeFilters.map((type) => ({
+        //     type: type,
+        //   })) || undefined,
       },
     });
 
