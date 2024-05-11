@@ -6,13 +6,22 @@ export const getPosts = async (req, res) => {
   const query = req.query;
 
   try {
+    let typeFilters = [];
+
+    if (query.type) {
+      typeFilters = query.type.split(",");
+    }
     const posts = await prisma.post.findMany({
       where: {
         city: query.city || undefined,
         price: {
-          gte: parseInt(query.minPirce) || undefined,
-          lte: parseInt(query.maxPirce) || undefined,
+          gte: parseInt(query.minPrice) || undefined,
+          lte: parseInt(query.maxPrice) || undefined,
         },
+        OR:
+          typeFilters.map((type) => ({
+            type: type,
+          })) || undefined,
       },
     });
 
@@ -23,7 +32,7 @@ export const getPosts = async (req, res) => {
   }
 };
 
-export const getPost = async (req, res) => {
+export const getPostById = async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -63,7 +72,44 @@ export const getPost = async (req, res) => {
   }
 };
 
-export const addPost = (req, res) => {};
+export const addPost = async (req, res) => {
+  const {
+    title,
+    price,
+    images,
+    url,
+    address,
+    city,
+    latitude,
+    longitude,
+    userId,
+    type,
+    postCode,
+    postDetail,
+    savedPost,
+  } = req.body;
+
+  const newPost = await prisma.post.create({
+    data: {
+      title,
+      price,
+      images,
+      url,
+      address,
+      city,
+      latitude,
+      longitude,
+      userId,
+      type,
+      postCode,
+      postDetail,
+      savedPost,
+    },
+  });
+
+  console.log(newPost);
+  res.status(201).json(newPost);
+};
 
 export const updatePost = (req, res) => {};
 
