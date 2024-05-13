@@ -16,55 +16,65 @@ datasource db {
 model User {
   id          String            @id @default(auto()) @map("_id") @db.ObjectId
   email       String            @unique
-  username    String            @unique
-  password    String
+  username    String?           @unique
+  password    String?
   phone       String?
-  address     String
+  address     String?
   createdAt   DateTime          @default(now())
   posts       Post[]
   savedPosts  SavedPost[]
 }
 
 model Post {
-  id          String            @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  price       Int
-  images      String[]
-  url         String
-  address     String
-  city        String
-  latitude    String
-  longitude   String
-  user        User              @relation(fields: [userId], references: [id])
-  userId      String            @db.ObjectId
-  type        PostType
-  postCode    String
-  postDetail  PostDetail?
+  id                  String            @id @default(auto()) @map("_id") @db.ObjectId
+  estateType          EstateType
+
+  area                String
+  price               String
+  frontageArea        String?
+  entranceArea        String?
+  estateDirection     Direction?
+  balconyDirection    Direction?
+  floor               Int?
+  bedroom             Int?
+  toilet              Int?
+  legal               String?
+  furniture           String?
+  postDate            DateTime
+  expireDate          DateTime
+  type                PostType
+  postCode            String
+  address             String
+  latitude            Float
+  longitude           Float
+  ownerPhone          String
+  images              String[]
+  ownerEmail          String
+  url                 String
+
+  user                User              @relation(fields: [userId], references: [id])
+  userId              String            @db.ObjectId
+
   savedPosts  SavedPost[]
+}
+
+enum EstateType {
+  buy
+  rent
 }
 
 enum PostType {
   basic
+  silver
   gold
   diamond
 }
 
-model PostDetail {
-  id          String            @id @default(auto()) @map("_id") @db.ObjectId
-  area        String
-  direction   Direction?
-  floor       Int?
-  bedroom     Int
-  toilet      Int
-  legal       String?
-  desc        String
-  postDate    DateTime
-  expireDate  DateTime
-  post        Post              @relation(fields: [postId], references: [id])
-  postId      String            @unique @db.ObjectId
-}
-
 enum Direction {
+  North
+  South
+  West
+  East
   EastNorth
   EastSouth
   WestNorth
