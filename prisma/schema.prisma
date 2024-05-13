@@ -21,39 +21,39 @@ model User {
   phone       String?
   address     String?
   createdAt   DateTime          @default(now())
-  posts       Post[]
+  // posts       Post[]
   savedPosts  SavedPost[]
 }
 
 model Post {
   id                  String            @id @default(auto()) @map("_id") @db.ObjectId
-  estateType          EstateType
+  estateType          EstateType?
 
-  area                String
-  price               String
+  area                String?
+  price               String?
   frontageArea        String?
   entranceArea        String?
-  estateDirection     Direction?
-  balconyDirection    Direction?
-  floor               Int?
-  bedroom             Int?
-  toilet              Int?
+  estateDirection     String?
+  balconyDirection    String?
+  floor               String?
+  bedroom             String?
+  toilet              String?
   legal               String?
   furniture           String?
-  postDate            DateTime
-  expireDate          DateTime
-  type                PostType
-  postCode            String
-  address             String
-  latitude            Float
-  longitude           Float
-  ownerPhone          String
-  images              String[]
-  ownerEmail          String
-  url                 String
+  postDate            String?
+  expireDate          String?
+  type                String?
+  postCode            Int?
+  address             String?
+  latitude            Float?
+  longitude           Float?
+  ownerPhone          Int?
+  images              String?
+  ownerEmail          String?
+  url                 String?
 
-  user                User              @relation(fields: [userId], references: [id])
-  userId              String            @db.ObjectId
+  // user                User?              @relation(fields: [userId], references: [id])
+  // userId              String            @db.ObjectId
 
   savedPosts  SavedPost[]
 }
