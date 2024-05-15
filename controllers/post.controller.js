@@ -6,22 +6,27 @@ export const getPosts = async (req, res) => {
   const query = req.query;
 
   try {
-    // let typeFilters = [];
-
-    // if (query.type) {
-    //   typeFilters = query.type.split(",");
-    // }
     const posts = await prisma.post.findMany({
       where: {
-        city: query.city || undefined,
+        area: {
+          gte: parseInt(query.minArea) || undefined,
+          let: parseInt(query.maxArea) || undefined,
+        },
         price: {
           gte: parseInt(query.minPrice) || undefined,
           lte: parseInt(query.maxPrice) || undefined,
         },
-        // OR:
-        //   typeFilters.map((type) => ({
-        //     type: type,
-        //   })) || undefined,
+        frontageArea: {
+          gte: parseInt(query.minFrontageArea) || undefined,
+          let: parseInt(query.maxFrontageArea) || undefined,
+        },
+        entranceArea: {
+          gte: parseInt(query.minEntranceArea) || undefined,
+          let: parseInt(query.maxEntranceArea) || undefined,
+        },
+        floor: query.floor || undefined,
+        bedroom: query.bedroom || undefined,
+        toilet: query.toilet || undefined,
       },
     });
 
