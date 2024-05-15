@@ -29,25 +29,26 @@ model Post {
   id                  String            @id @default(auto()) @map("_id") @db.ObjectId
   estateType          EstateType?
 
-  area                String?
-  price               String?
-  frontageArea        String?
-  entranceArea        String?
+  area                Int?
+  price               Int?
+  priceUnit           String?
+  frontageArea        Int?
+  entranceArea        Int?
   estateDirection     String?
   balconyDirection    String?
-  floor               String?
-  bedroom             String?
-  toilet              String?
+  floor               Int?
+  bedroom             Int?
+  toilet              Int?
   legal               String?
   furniture           String?
-  postDate            String?
-  expireDate          String?
+  postDate            DateTime?
+  expireDate          DateTime?
   type                String?
   postCode            Int?
   address             String?
   latitude            Float?
   longitude           Float?
-  ownerPhone          Int?
+  ownerPhone          String?
   images              String?
   ownerEmail          String?
   url                 String?
