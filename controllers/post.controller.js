@@ -6,7 +6,7 @@ export const getRentPosts = async (req, res) => {
 
   try {
     const posts = await prisma.post.findMany({
-      take: 1000,
+      take: 100,
       where: {
         estateType: "rent",
         area: {
@@ -43,7 +43,7 @@ export const getBuyPosts = async (req, res) => {
 
   try {
     const posts = await prisma.post.findMany({
-      take: 1000,
+      take: 100,
       where: {
         estateType: "buy",
         area: {
