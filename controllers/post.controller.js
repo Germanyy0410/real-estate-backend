@@ -1,13 +1,14 @@
 import prisma from "../lib/prisma.js";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-export const getPosts = async (req, res) => {
+export const getRentPosts = async (req, res) => {
   const query = req.query;
 
   try {
     const posts = await prisma.post.findMany({
+      take: 1000,
       where: {
+        estateType: "rent",
         area: {
           gte: parseInt(query.minArea) || undefined,
           let: parseInt(query.maxArea) || undefined,
@@ -33,7 +34,44 @@ export const getPosts = async (req, res) => {
     res.status(200).json(posts);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Failed to get posts" });
+    res.status(500).json({ message: "Failed to get rent posts" });
+  }
+}
+
+export const getBuyPosts = async (req, res) => {
+  const query = req.query;
+
+  try {
+    const posts = await prisma.post.findMany({
+      take: 1000,
+      where: {
+        estateType: "buy",
+        area: {
+          gte: parseInt(query.minArea) || undefined,
+          let: parseInt(query.maxArea) || undefined,
+        },
+        price: {
+          gte: parseInt(query.minPrice) || undefined,
+          lte: parseInt(query.maxPrice) || undefined,
+        },
+        frontageArea: {
+          gte: parseInt(query.minFrontageArea) || undefined,
+          let: parseInt(query.maxFrontageArea) || undefined,
+        },
+        entranceArea: {
+          gte: parseInt(query.minEntranceArea) || undefined,
+          let: parseInt(query.maxEntranceArea) || undefined,
+        },
+        floor: query.floor || undefined,
+        bedroom: query.bedroom || undefined,
+        toilet: query.toilet || undefined,
+      },
+    });
+
+    res.status(200).json(posts);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Failed to get buy posts" });
   }
 };
 
@@ -43,14 +81,6 @@ export const getPostById = async (req, res) => {
   try {
     const post = await prisma.post.findUnique({
       where: { id },
-      include: {
-        postDetail: true,
-        user: {
-          select: {
-            username: true,
-          },
-        },
-      },
     });
 
     const token = req.cookies?.token;
@@ -115,7 +145,3 @@ export const addPost = async (req, res) => {
   console.log(newPost);
   res.status(201).json(newPost);
 };
-
-export const updatePost = (req, res) => {};
-
-export const deletePost = (req, res) => {};
