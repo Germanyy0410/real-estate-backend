@@ -8,7 +8,9 @@ export const getRentPosts = async (req, res) => {
     const posts = await prisma.post.findMany({
       take: 100,
       where: {
-        estateType: "rent",
+        estateType: {
+          contains: "rent",
+        },
         area: {
           gte: parseInt(query.minArea) || undefined,
           let: parseInt(query.maxArea) || undefined,
@@ -36,7 +38,7 @@ export const getRentPosts = async (req, res) => {
     console.log(error);
     res.status(500).json({ message: "Failed to get rent posts" });
   }
-}
+};
 
 export const getBuyPosts = async (req, res) => {
   const query = req.query;
@@ -45,7 +47,9 @@ export const getBuyPosts = async (req, res) => {
     const posts = await prisma.post.findMany({
       take: 100,
       where: {
-        estateType: "buy",
+        estateType: {
+          contains: "buy",
+        },
         area: {
           gte: parseInt(query.minArea) || undefined,
           let: parseInt(query.maxArea) || undefined,
