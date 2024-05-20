@@ -42,12 +42,12 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
   try {
     const user = await prisma.user.findUnique({
       where: {
-        email: email,
+        username: username,
       },
     });
 
@@ -78,7 +78,7 @@ export const login = async (req, res) => {
     res.status(200).json({ message: "Login successful", token });
   } catch (error) {
     console.error("Error during login:", error);
-    res.status(500).json({ message: "An error occurred while logging in" });
+    res.status(500).json({ message: "An error occurred while logging in", error: error });
   }
 };
 

@@ -149,3 +149,7 @@ export const addPost = async (req, res) => {
   console.log(newPost);
   res.status(201).json(newPost);
 };
+
+export const editPost = async (req, res) => {
+  
+}
