@@ -50,7 +50,7 @@ export const getPostStatus = async (req, res) => {
       },
     });
 
-    const status = savePost ? true : false;
+    const status = savedPost ? true : false;
 
     res.status(200).json({ status: status });
   } catch (err) {
