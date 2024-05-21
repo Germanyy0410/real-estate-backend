@@ -13,7 +13,7 @@ export const getRentPosts = async (req, res) => {
         },
         area: {
           gte: parseInt(query.minArea) || undefined,
-          let: parseInt(query.maxArea) || undefined,
+          lte: parseInt(query.maxArea) || undefined,
         },
         price: {
           gte: parseInt(query.minPrice) || undefined,
@@ -21,11 +21,19 @@ export const getRentPosts = async (req, res) => {
         },
         frontageArea: {
           gte: parseInt(query.minFrontageArea) || undefined,
-          let: parseInt(query.maxFrontageArea) || undefined,
+          lte: parseInt(query.maxFrontageArea) || undefined,
         },
         entranceArea: {
           gte: parseInt(query.minEntranceArea) || undefined,
-          let: parseInt(query.maxEntranceArea) || undefined,
+          lte: parseInt(query.maxEntranceArea) || undefined,
+        },
+        longitude: {
+          gte: parseFloat(query.minLongtitude) || undefined,
+          lte: parseFloat(query.maxLongtitude) || undefined,
+        },
+        latitude: {
+          gte: parseFloat(query.minLatitude) || undefined,
+          lte: parseFloat(query.maxLatitude) || undefined,
         },
         floor: query.floor || undefined,
         bedroom: query.bedroom || undefined,
@@ -65,6 +73,14 @@ export const getBuyPosts = async (req, res) => {
         entranceArea: {
           gte: parseInt(query.minEntranceArea) || undefined,
           let: parseInt(query.maxEntranceArea) || undefined,
+        },
+        longitude: {
+          gte: parseFloat(query.minLongtitude) || undefined,
+          lte: parseFloat(query.maxLongtitude) || undefined,
+        },
+        latitude: {
+          gte: parseFloat(query.minLatitude) || undefined,
+          lte: parseFloat(query.maxLatitude) || undefined,
         },
         floor: query.floor || undefined,
         bedroom: query.bedroom || undefined,
@@ -111,45 +127,3 @@ export const getPostById = async (req, res) => {
   }
 };
 
-export const addPost = async (req, res) => {
-  const {
-    title,
-    price,
-    images,
-    url,
-    address,
-    city,
-    latitude,
-    longitude,
-    userId,
-    type,
-    postCode,
-    postDetail,
-    savedPost,
-  } = req.body;
-
-  const newPost = await prisma.post.create({
-    data: {
-      title,
-      price,
-      images,
-      url,
-      address,
-      city,
-      latitude,
-      longitude,
-      userId,
-      type,
-      postCode,
-      postDetail,
-      savedPost,
-    },
-  });
-
-  console.log(newPost);
-  res.status(201).json(newPost);
-};
-
-export const editPost = async (req, res) => {
-  
-}
