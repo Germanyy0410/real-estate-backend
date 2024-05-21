@@ -8,7 +8,7 @@ export const getRentPosts = async (req, res) => {
     const posts = await prisma.post.findMany({
       take: 100,
       where: {
-        estateType: "rent" || undefined,
+        estateType: rent || undefined,
         area: {
           gte: parseInt(query.minArea) || undefined,
           lte: parseInt(query.maxArea) || undefined,
