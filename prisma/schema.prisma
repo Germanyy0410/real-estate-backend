@@ -37,7 +37,7 @@ model User {
 
 model Post {
   id                  String            @id @default(auto()) @map("_id") @db.ObjectId
-  estateType          String
+  estateType          String?
 
   area                Int?
   price               Int?
