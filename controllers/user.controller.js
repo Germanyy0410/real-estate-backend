@@ -1,5 +1,4 @@
 import prisma from "../lib/prisma.js";
-import bcrypt from "bcrypt";
 
 export const savePost = async (req, res) => {
   const { postId } = req.body;

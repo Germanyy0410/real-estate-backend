@@ -24,6 +24,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "jsonwebtoken": "^9.0.2",
-    "prisma": "^5.13.0"
+    "prisma": "^5.13.0",
+    "python-shell": "^5.0.0"
   }
 }
