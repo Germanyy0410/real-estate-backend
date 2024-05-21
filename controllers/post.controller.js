@@ -1,93 +1,105 @@
 import prisma from "../lib/prisma.js";
 import jwt from "jsonwebtoken";
 
+const postCount = 20;
+
+const parseQueryParam = (param, parser) => (param ? parser(param) : undefined);
+
 export const getRentPosts = async (req, res) => {
   const query = req.query;
+  const { currentPage } = req.body;
+
+  const filters = {
+    estateType: "rent" || undefined,
+    area: {
+      gte: parseQueryParam(query.minArea, parseInt),
+      lte: parseQueryParam(query.maxArea, parseInt),
+    },
+    price: {
+      gte: parseQueryParam(query.minPrice, parseInt),
+      lte: parseQueryParam(query.maxPrice, parseInt),
+    },
+    frontageArea: {
+      gte: parseQueryParam(query.minFrontageArea, parseInt),
+      lte: parseQueryParam(query.maxFrontageArea, parseInt),
+    },
+    entranceArea: {
+      gte: parseQueryParam(query.minEntranceArea, parseInt),
+      lte: parseQueryParam(query.maxEntranceArea, parseInt),
+    },
+    longitude: {
+      gte: parseQueryParam(query.minLongitude, parseFloat),
+      lte: parseQueryParam(query.maxLongitude, parseFloat),
+    },
+    latitude: {
+      gte: parseQueryParam(query.minLatitude, parseFloat),
+      lte: parseQueryParam(query.maxLatitude, parseFloat),
+    },
+    floor: query.floor || undefined,
+    bedroom: query.bedroom || undefined,
+    toilet: query.toilet || undefined,
+  };
 
   try {
     const posts = await prisma.post.findMany({
-      take: 100,
-      where: {
-        estateType: 'rent' || undefined,
-        area: {
-          gte: parseInt(query.minArea) || undefined,
-          lte: parseInt(query.maxArea) || undefined,
-        },
-        price: {
-          gte: parseInt(query.minPrice) || undefined,
-          lte: parseInt(query.maxPrice) || undefined,
-        },
-        frontageArea: {
-          gte: parseInt(query.minFrontageArea) || undefined,
-          lte: parseInt(query.maxFrontageArea) || undefined,
-        },
-        entranceArea: {
-          gte: parseInt(query.minEntranceArea) || undefined,
-          lte: parseInt(query.maxEntranceArea) || undefined,
-        },
-        longitude: {
-          gte: parseFloat(query.minLongtitude) || undefined,
-          lte: parseFloat(query.maxLongtitude) || undefined,
-        },
-        latitude: {
-          gte: parseFloat(query.minLatitude) || undefined,
-          lte: parseFloat(query.maxLatitude) || undefined,
-        },
-        floor: query.floor || undefined,
-        bedroom: query.bedroom || undefined,
-        toilet: query.toilet || undefined,
-      },
+      skip: (currentPage - 1) * postCount,
+      take: postCount,
+      where: filters,
     });
 
     res.status(200).json(posts);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ message: "Failed to get rent posts" });
   }
 };
 
 export const getBuyPosts = async (req, res) => {
   const query = req.query;
+  const { currentPage } = req.body;
+
+  const filters = {
+    estateType: "buy" || undefined,
+    area: {
+      gte: parseQueryParam(query.minArea, parseInt),
+      lte: parseQueryParam(query.maxArea, parseInt),
+    },
+    price: {
+      gte: parseQueryParam(query.minPrice, parseInt),
+      lte: parseQueryParam(query.maxPrice, parseInt),
+    },
+    frontageArea: {
+      gte: parseQueryParam(query.minFrontageArea, parseInt),
+      lte: parseQueryParam(query.maxFrontageArea, parseInt),
+    },
+    entranceArea: {
+      gte: parseQueryParam(query.minEntranceArea, parseInt),
+      lte: parseQueryParam(query.maxEntranceArea, parseInt),
+    },
+    longitude: {
+      gte: parseQueryParam(query.minLongitude, parseFloat),
+      lte: parseQueryParam(query.maxLongitude, parseFloat),
+    },
+    latitude: {
+      gte: parseQueryParam(query.minLatitude, parseFloat),
+      lte: parseQueryParam(query.maxLatitude, parseFloat),
+    },
+    floor: query.floor || undefined,
+    bedroom: query.bedroom || undefined,
+    toilet: query.toilet || undefined,
+  };
 
   try {
     const posts = await prisma.post.findMany({
-      take: 100,
-      where: {
-        estateType: "buy" || undefined,
-        area: {
-          gte: parseInt(query.minArea) || undefined,
-          let: parseInt(query.maxArea) || undefined,
-        },
-        price: {
-          gte: parseInt(query.minPrice) || undefined,
-          lte: parseInt(query.maxPrice) || undefined,
-        },
-        frontageArea: {
-          gte: parseInt(query.minFrontageArea) || undefined,
-          let: parseInt(query.maxFrontageArea) || undefined,
-        },
-        entranceArea: {
-          gte: parseInt(query.minEntranceArea) || undefined,
-          let: parseInt(query.maxEntranceArea) || undefined,
-        },
-        longitude: {
-          gte: parseFloat(query.minLongtitude) || undefined,
-          lte: parseFloat(query.maxLongtitude) || undefined,
-        },
-        latitude: {
-          gte: parseFloat(query.minLatitude) || undefined,
-          lte: parseFloat(query.maxLatitude) || undefined,
-        },
-        floor: query.floor || undefined,
-        bedroom: query.bedroom || undefined,
-        toilet: query.toilet || undefined,
-      },
+      skip: (currentPage - 1) * postCount,
+      take: postCount,
+      where: filters,
     });
 
     res.status(200).json(posts);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Failed to get buy posts" });
+    console.error(error);
+    res.status(500).json({ message: "Failed to get rent posts" });
   }
 };
 
@@ -122,4 +134,3 @@ export const getPostById = async (req, res) => {
     res.status(500).json({ message: "Failed to get posts" });
   }
 };
-
