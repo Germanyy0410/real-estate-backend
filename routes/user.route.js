@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.post("/save", verifyToken, savePost);
 router.get("/saved-posts", verifyToken, getSavedPosts);
-router.get("/status", verifyToken, getPostStatus);
+router.get("/post-status", verifyToken, getPostStatus);
 
 export default router;
