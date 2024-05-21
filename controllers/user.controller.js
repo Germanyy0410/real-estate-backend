@@ -5,39 +5,57 @@ export const savePost = async (req, res) => {
   const tokenUserId = req.userId;
 
   try {
-    const user = await prisma.user.findUnique({
+    const savedPost = await prisma.savedPost.findUnique({
       where: {
-        id: tokenUserId,
-      },
-      select: {
-        savedPosts: true,
+        userId_postId: {
+          userId: tokenUserId,
+          postId,
+        },
       },
     });
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const postIndex = user.savedPosts.indexOf(postId);
-
-    if (postIndex > -1) {
-      user.savedPosts.splice(postIndex, 1);
-      await prisma.user.update({
-        where: { id: tokenUserId },
-        data: { savedPosts: user.savedPosts },
+    if (savedPost) {
+      await prisma.savedPost.delete({
+        where: {
+          id: savedPost.id,
+        },
       });
       res.status(200).json({ message: "Post removed from saved list" });
     } else {
-      user.savedPosts.push(postId);
-      await prisma.user.update({
-        where: { id: tokenUserId },
-        data: { savedPosts: user.savedPosts },
+      await prisma.savedPost.create({
+        data: {
+          userId: tokenUserId,
+          postId,
+        },
       });
       res.status(200).json({ message: "Post saved" });
     }
-  } catch (error) {
-    console.error("Error saving post:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Failed to save or remove post!" });
+  }
+};
+
+export const getPostStatus = async (req, res) => {
+  const { postId } = req.body;
+  const tokenUserId = req.userId;
+
+  try {
+    const savedPost = await prisma.savedPost.findUnique({
+      where: {
+        userId_postId: {
+          userId: tokenUserId,
+          postId,
+        },
+      },
+    });
+
+    const status = savePost ? true : false;
+
+    res.status(200).json({ status: status });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Failed to check post status!" });
   }
 };
 
@@ -45,24 +63,10 @@ export const getSavedPosts = async (req, res) => {
   const userId = req.userId;
 
   try {
-    const user = await prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
-      select: {
-        savedPosts: true,
-      },
-    });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const savedPosts = await prisma.post.findMany({
-      where: {
-        id: {
-          in: user.savedPosts,
-        },
+    const savedPosts = await prisma.savedPost.findMany({
+      where: { userId: userId },
+      include: {
+        post: true,
       },
     });
 
