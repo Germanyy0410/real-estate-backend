@@ -68,7 +68,6 @@ export const login = async (req, res) => {
       {
         email: user.email,
         id: user.id,
-        fullname: user.fullname,
       },
       secretKey,
       { expiresIn: "1h" }
