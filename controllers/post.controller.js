@@ -14,8 +14,7 @@ export const getRentPosts = async (req, res) => {
   let minLat, maxLat, minLon, maxLon;
 
   if (query.longitude && query.latitude) {
-    const boundingBox = getBoundingBox(10, 20);
-    ({ minLat, maxLat, minLon, maxLon } = boundingBox);
+    ({ minLat, maxLat, minLon, maxLon } = getBoundingBox(query.longitude, query.latitude));
   }
 
   console.log(minLat, maxLat, minLon, maxLon);
@@ -78,8 +77,7 @@ export const getBuyPosts = async (req, res) => {
   let minLat, maxLat, minLon, maxLon;
 
   if (query.longitude && query.latitude) {
-    const boundingBox = getBoundingBox(10, 20);
-    ({ minLat, maxLat, minLon, maxLon } = boundingBox);
+    ({ minLat, maxLat, minLon, maxLon } = getBoundingBox(query.longitude, query.latitude));
   }
 
   console.log(minLat, maxLat, minLon, maxLon);
