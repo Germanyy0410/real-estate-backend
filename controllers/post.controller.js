@@ -18,6 +18,8 @@ export const getRentPosts = async (req, res) => {
     ({ minLat, maxLat, minLon, maxLon } = boundingBox);
   }
 
+  console.log(minLat, maxLat, minLon, maxLon);
+
   const filters = {
     estateType: "rent" || undefined,
     area: {
@@ -79,6 +81,8 @@ export const getBuyPosts = async (req, res) => {
     const boundingBox = getBoundingBox(10, 20);
     ({ minLat, maxLat, minLon, maxLon } = boundingBox);
   }
+
+  console.log(minLat, maxLat, minLon, maxLon);
 
   const filters = {
     estateType: "buy" || undefined,
