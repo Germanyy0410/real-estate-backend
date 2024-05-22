@@ -11,21 +11,11 @@ export const getRentPosts = async (req, res) => {
   const query = req.query;
   const { currentPage } = req.body;
 
-  // const { minLat, maxLat, minLon, maxLon } =
-  //   query.longitude && query.latitude
-  //     ? getBoundingBox(latitude, longitude)
-  //     : undefined;
+  let minLat, maxLat, minLon, maxLon;
 
-  const minLat = undefined;
-  const maxLat = undefined;
-  const minLon = undefined;
-  const maxLon = undefined;
   if (query.longitude && query.latitude) {
     const boundingBox = getBoundingBox(10, 20);
-    minLat = boundingBox.minLat;
-    maxLat = boundingBox.maxLat;
-    minLon = boundingBox.minLon;
-    maxLon = boundingBox.maxLon;
+    ({ minLat, maxLat, minLon, maxLon } = boundingBox);
   }
 
   const filters = {
@@ -82,21 +72,11 @@ export const getRentPosts = async (req, res) => {
 export const getBuyPosts = async (req, res) => {
   const query = req.query;
 
-  // const { minLat, maxLat, minLon, maxLon } =
-  //   query.longitude && query.latitude
-  //     ? getBoundingBox(latitude, longitude)
-  //     : undefined;
+  let minLat, maxLat, minLon, maxLon;
 
   if (query.longitude && query.latitude) {
-    const { minLat, maxLat, minLon, maxLon } = getBoundingBox(
-      latitude,
-      longitude
-    );
-  } else {
-    const minLat = undefined;
-    const maxLat = undefined;
-    const minLon = undefined;
-    const maxLon = undefined;
+    const boundingBox = getBoundingBox(10, 20);
+    ({ minLat, maxLat, minLon, maxLon } = boundingBox);
   }
 
   const filters = {
