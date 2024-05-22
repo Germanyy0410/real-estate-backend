@@ -1,5 +1,6 @@
 import prisma from "../lib/prisma.js";
 import jwt from "jsonwebtoken";
+import { getBoundingBox } from "../utils/getBoundingBox.js";
 
 const postCount = 20;
 
@@ -8,8 +9,11 @@ const parseQueryParam = (param, parser) => (param ? parser(param) : undefined);
 export const getRentPosts = async (req, res) => {
   const query = req.query;
   const { currentPage } = req.body;
-  console.log("Current page: " + currentPage);
-  console.log(postCount);
+
+  const { minLat, maxLat, minLon, maxLon } =
+    query.longitude && query.latitude
+      ? getBoundingBox(latitude, longitude)
+      : undefined;
 
   const filters = {
     estateType: "rent" || undefined,
@@ -30,12 +34,12 @@ export const getRentPosts = async (req, res) => {
       lte: parseQueryParam(query.maxEntranceArea, parseInt),
     },
     longitude: {
-      gte: parseQueryParam(query.minLongitude, parseFloat),
-      lte: parseQueryParam(query.maxLongitude, parseFloat),
+      gte: parseQueryParam(minLon, parseFloat),
+      lte: parseQueryParam(maxLon, parseFloat),
     },
     latitude: {
-      gte: parseQueryParam(query.minLatitude, parseFloat),
-      lte: parseQueryParam(query.maxLatitude, parseFloat),
+      gte: parseQueryParam(minLat, parseFloat),
+      lte: parseQueryParam(maxLat, parseFloat),
     },
     floor: {
       equals: parseQueryParam(query.floor, parseInt),
@@ -64,8 +68,11 @@ export const getRentPosts = async (req, res) => {
 
 export const getBuyPosts = async (req, res) => {
   const query = req.query;
-  const { currentPage } = req.body;
-  console.log("Current page: " + currentPage);
+
+  const { minLat, maxLat, minLon, maxLon } =
+    query.longitude && query.latitude
+      ? getBoundingBox(latitude, longitude)
+      : undefined;
 
   const filters = {
     estateType: "buy" || undefined,
@@ -86,12 +93,12 @@ export const getBuyPosts = async (req, res) => {
       lte: parseQueryParam(query.maxEntranceArea, parseInt),
     },
     longitude: {
-      gte: parseQueryParam(query.minLongitude, parseFloat),
-      lte: parseQueryParam(query.maxLongitude, parseFloat),
+      gte: parseQueryParam(minLon, parseFloat),
+      lte: parseQueryParam(maxLon, parseFloat),
     },
     latitude: {
-      gte: parseQueryParam(query.minLatitude, parseFloat),
-      lte: parseQueryParam(query.maxLatitude, parseFloat),
+      gte: parseQueryParam(minLat, parseFloat),
+      lte: parseQueryParam(maxLat, parseFloat),
     },
     floor: {
       equals: parseQueryParam(query.floor, parseInt),
