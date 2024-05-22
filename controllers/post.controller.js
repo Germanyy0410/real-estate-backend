@@ -37,9 +37,15 @@ export const getRentPosts = async (req, res) => {
       gte: parseQueryParam(query.minLatitude, parseFloat),
       lte: parseQueryParam(query.maxLatitude, parseFloat),
     },
-    floor: query.floor || undefined,
-    bedroom: query.bedroom || undefined,
-    toilet: query.toilet || undefined,
+    floor: {
+      equals: parseQueryParam(query.floor, parseInt),
+    },
+    bedroom: {
+      equals: parseQueryParam(query.bedroom, parseInt),
+    },
+    toilet: {
+      equals: parseQueryParam(query.toilet, parseInt),
+    },
   };
 
   try {
@@ -87,9 +93,15 @@ export const getBuyPosts = async (req, res) => {
       gte: parseQueryParam(query.minLatitude, parseFloat),
       lte: parseQueryParam(query.maxLatitude, parseFloat),
     },
-    floor: query.floor || undefined,
-    bedroom: query.bedroom || undefined,
-    toilet: query.toilet || undefined,
+    floor: {
+      equals: parseQueryParam(query.floor, parseInt),
+    },
+    bedroom: {
+      equals: parseQueryParam(query.bedroom, parseInt),
+    },
+    toilet: {
+      equals: parseQueryParam(query.toilet, parseInt),
+    },
   };
 
   try {
