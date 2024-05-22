@@ -7,7 +7,7 @@ const parseQueryParam = (param, parser) => (param ? parser(param) : undefined);
 
 export const getRentPosts = async (req, res) => {
   const query = req.query;
-  const { currentPage } = req.body;
+  const { currentPage } = parseInt(req.body);
 
   const filters = {
     estateType: "rent" || undefined,
@@ -56,7 +56,7 @@ export const getRentPosts = async (req, res) => {
 
 export const getBuyPosts = async (req, res) => {
   const query = req.query;
-  const { currentPage } = req.body;
+  const { currentPage } = parseInt(req.body);
 
   const filters = {
     estateType: "buy" || undefined,
