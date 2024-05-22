@@ -71,6 +71,7 @@ export const getRentPosts = async (req, res) => {
 
 export const getBuyPosts = async (req, res) => {
   const query = req.query;
+  const { currentPage } = req.body;
 
   let minLat, maxLat, minLon, maxLon;
 
