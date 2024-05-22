@@ -1,7 +1,9 @@
-import express, { json } from "express";
-import { connect } from "mongoose";
+import express from "express";
+import { json } from "express";
+import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+
 import authRoute from "./routes/auth.route.js";
 import postRoute from "./routes/post.route.js";
 import userRoute from "./routes/user.route.js";
@@ -10,24 +12,22 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cookieParser());
-app.use(express.json());
+app.use(json());
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+}));
 
 app.use("/api/auth", authRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/users", userRoute);
 
-connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("\nApp connected to MongoDB");
     app.listen(PORT, () => {
-      console.log(`Server is listening on http://localhost:${PORT}`);
+      console.log(`Server is listening on PORT ${PORT}`);
     });
   })
   .catch((err) => {
