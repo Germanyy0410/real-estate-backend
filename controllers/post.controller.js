@@ -1,6 +1,7 @@
 import prisma from "../lib/prisma.js";
 import jwt from "jsonwebtoken";
 import { getBoundingBox } from "../utils/getBoundingBox.js";
+import { get } from "mongoose";
 
 const postCount = 20;
 
@@ -10,10 +11,19 @@ export const getRentPosts = async (req, res) => {
   const query = req.query;
   const { currentPage } = req.body;
 
-  const { minLat, maxLat, minLon, maxLon } =
-    query.longitude && query.latitude
-      ? getBoundingBox(latitude, longitude)
-      : undefined;
+  // const { minLat, maxLat, minLon, maxLon } =
+  //   query.longitude && query.latitude
+  //     ? getBoundingBox(latitude, longitude)
+  //     : undefined;
+
+  if (query.longitude && query.latitude) {
+    const { minLat, maxLat, minLon, maxLon } = getBoundingBox(latitude, longitude);
+  } else {
+    const minLat = undefined;
+    const maxLat = undefined;
+    const minLon = undefined;
+    const maxLon = undefined;
+  }
 
   const filters = {
     estateType: "rent" || undefined,
@@ -69,10 +79,19 @@ export const getRentPosts = async (req, res) => {
 export const getBuyPosts = async (req, res) => {
   const query = req.query;
 
-  const { minLat, maxLat, minLon, maxLon } =
-    query.longitude && query.latitude
-      ? getBoundingBox(latitude, longitude)
-      : undefined;
+  // const { minLat, maxLat, minLon, maxLon } =
+  //   query.longitude && query.latitude
+  //     ? getBoundingBox(latitude, longitude)
+  //     : undefined;
+
+  if (query.longitude && query.latitude) {
+    const { minLat, maxLat, minLon, maxLon } = getBoundingBox(latitude, longitude);
+  } else {
+    const minLat = undefined;
+    const maxLat = undefined;
+    const minLon = undefined;
+    const maxLon = undefined;
+  }
 
   const filters = {
     estateType: "buy" || undefined,
