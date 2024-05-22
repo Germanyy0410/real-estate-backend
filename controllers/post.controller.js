@@ -16,13 +16,16 @@ export const getRentPosts = async (req, res) => {
   //     ? getBoundingBox(latitude, longitude)
   //     : undefined;
 
+  const minLat = undefined;
+  const maxLat = undefined;
+  const minLon = undefined;
+  const maxLon = undefined;
   if (query.longitude && query.latitude) {
-    const { minLat, maxLat, minLon, maxLon } = getBoundingBox(latitude, longitude);
-  } else {
-    const minLat = undefined;
-    const maxLat = undefined;
-    const minLon = undefined;
-    const maxLon = undefined;
+    const boundingBox = getBoundingBox(10, 20);
+    minLat = boundingBox.minLat;
+    maxLat = boundingBox.maxLat;
+    minLon = boundingBox.minLon;
+    maxLon = boundingBox.maxLon;
   }
 
   const filters = {
@@ -85,7 +88,10 @@ export const getBuyPosts = async (req, res) => {
   //     : undefined;
 
   if (query.longitude && query.latitude) {
-    const { minLat, maxLat, minLon, maxLon } = getBoundingBox(latitude, longitude);
+    const { minLat, maxLat, minLon, maxLon } = getBoundingBox(
+      latitude,
+      longitude
+    );
   } else {
     const minLat = undefined;
     const maxLat = undefined;
