@@ -16,7 +16,7 @@ app.use(json());
 
 app.use(
   cors({
-    origin: "https://real-estate-frontend-cyan.vercel.app",
+    origin: "https://real-estate-frontend-xi.vercel.app",
     credentials: true,
   })
 );
