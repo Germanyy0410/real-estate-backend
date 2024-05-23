@@ -1,5 +1,5 @@
 # Real Estate Backend
-This project is a backend application built with Node.js and Express for managing real estate listings. It utilizes MongoDB as the primary database, with Prisma ORM for seamless database interactions. The application includes functionality for buying and renting properties, with data crawled from batdongsan.com. Additionally, it provides user authentication using JWT (JSON Web Tokens) and allows users to save their favorite property listings.
+This project is a backend application built with Node.js and Express for managing real estate listings. It utilizes MongoDB as the primary database, with Prisma ORM for seamless database interactions. The application includes functionality for buying and renting properties, with data crawled from [batdongsan.com.vn](https://batdongsan.com.vn/) Additionally, it provides user authentication using JWT (JSON Web Tokens) and allows users to save their favorite property listings.
 
 ## Features
 - Property Management: Buy and rent listings from batdongsan.com are crawled and stored in the database.
