@@ -9,7 +9,6 @@ const parseQueryParam = (param, parser) => (param ? parser(param) : undefined);
 
 export const getRentPosts = async (req, res) => {
   const query = req.query;
-  const { currentPage } = req.body;
 
   let minLat, maxLat, minLon, maxLon;
 
@@ -58,7 +57,7 @@ export const getRentPosts = async (req, res) => {
 
   try {
     const posts = await prisma.post.findMany({
-      skip: (currentPage - 1) * postCount,
+      skip: (query.currentPage - 1) * postCount,
       take: postCount,
       where: filters,
     });
@@ -72,7 +71,6 @@ export const getRentPosts = async (req, res) => {
 
 export const getBuyPosts = async (req, res) => {
   const query = req.query;
-  const { currentPage } = req.body;
 
   let minLat, maxLat, minLon, maxLon;
 
@@ -121,7 +119,7 @@ export const getBuyPosts = async (req, res) => {
 
   try {
     const posts = await prisma.post.findMany({
-      skip: (currentPage - 1) * postCount,
+      skip: (query.currentPage - 1) * postCount,
       take: postCount,
       where: filters,
     });

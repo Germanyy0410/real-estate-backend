@@ -65,4 +65,6 @@ model Post {
   user                User?        @relation(fields: [userId], references: [id])
   userId              String?      @db.ObjectId
   savedPosts          SavedPost[]
+
+  @@index([latitude,longitude])
 }
