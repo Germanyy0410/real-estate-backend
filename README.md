@@ -4,7 +4,7 @@ This project is a backend application built with Node.js and Express for managin
 ## Features
 - Property Management: Buy and rent listings from batdongsan.com are crawled and stored in the database.
 - Authentication: Users can sign up, log in, and authenticate using JWT.
-Favorite Listings: Authenticated users can save their favorite property listings to their account.
+- Favorite Listings: Authenticated users can save their favorite property listings to their account.
 - RESTful API: Well-structured API endpoints for managing properties and user accounts.
 
 ## Technologies Used
