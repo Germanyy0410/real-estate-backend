@@ -14,16 +14,16 @@ Favorite Listings: Authenticated users can save their favorite property listings
 - Prisma
 - JWT
 
-# Installation
+## Installation
 Clone the repository:
 ```bash
 git clone https://github.com/Germanyy0410/real-estate-backend
 ```
-# Install dependencies:
+## Install dependencies:
 ```bash
 npm install
 ```
-# Set up environment variables:
+## Set up environment variables:
 Create a .env file in the root directory based on our .env.example file:
 
 ```bash
@@ -32,7 +32,7 @@ PORT=3001
 JWT_SECRET_KEY='YOUR_JWT_SECRET_KEY'
 ```
 
-# Run the application:
+## Run the application:
 ```bash
 npm start
 ```
