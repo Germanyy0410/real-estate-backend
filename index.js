@@ -14,16 +14,19 @@ const PORT = process.env.PORT || 3001;
 app.use(cookieParser());
 app.use(json());
 
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: "https://real-estate-frontend-ip46.vercel.app",
+    credentials: true,
+  })
+);
 
 app.use("/api/auth", authRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/users", userRoute);
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("\nApp connected to MongoDB");
     app.listen(PORT, () => {
